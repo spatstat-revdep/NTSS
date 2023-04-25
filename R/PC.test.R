@@ -45,10 +45,13 @@
 #' elevation <- bei.extra$elev
 #' plot(elevation)
 #'
-#' out1 <- PC.test(X=bei, covariate=elevation, radius=250, correction="torus", verbose=TRUE)
+#' # tests run with only 99 shifts to speed up the computation
+#' out1 <- PC.test(X=bei, covariate=elevation, N.shifts = 99, radius=250,
+#'                 correction="torus", verbose=TRUE)
 #' out1
 #'
-#' out2 <- PC.test(X=bei, covariate=elevation, radius=250, correction="variance", verbose=TRUE)
+#' out2 <- PC.test(X=bei, covariate=elevation, N.shifts = 99, radius=250,
+#'                 correction="variance", verbose=TRUE)
 #' out2
 #'
 #' @export

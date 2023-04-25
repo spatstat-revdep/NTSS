@@ -4,7 +4,16 @@
 \alias{PP.test}
 \title{Random shift test of independence in a bivariate point process}
 \usage{
-PP.test(X, Y, N.shifts = 999, radius, correction, verbose = FALSE)
+PP.test(
+  X,
+  Y,
+  N.shifts = 999,
+  radius,
+  correction,
+  statistic,
+  rmax.K = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{X}{first point pattern dataset (object of class \code{ppp})}
@@ -16,6 +25,10 @@ PP.test(X, Y, N.shifts = 999, radius, correction, verbose = FALSE)
 \item{radius}{positive real number determining the radius of the disk on which the shift vectors are uniformly distributed}
 
 \item{correction}{which correction should be applied in the random shift test (possible choices are "torus" and "variance")}
+
+\item{statistic}{which test statistic should be used (possible choices are "K12" and "ED12")}
+
+\item{rmax.K}{positive real number, for the cross K-function determines the maximum argument to be considered}
 
 \item{verbose}{logical value indicating whether auxiliary information should be printed and auxiliary figures plotted during the computation}
 }
@@ -29,28 +42,44 @@ variance correction is not yet implemented in this package but the corresponding
 codes can be obtained from the authors upon request).
 }
 \details{
-The test statistic is the expectation of the cross nearest-neighbor distance, see the paper
-Mrkvička et al. (2021). The test statistic based on the cross K-function is
-not provided here due to its poor performance in the simulation experiments
-described in the paper.
+The test statistic is either the cross K-function K12 or the expectation of the
+cross nearest-neighbor distance ED12, see the paper Mrkvička et al. (2021). It is recommended to use the K12 statistic
+for regular and Poisson processes, while it is recommended to use ED12 for cluster processes due to the potential
+liberality of K12 in this case.
 
 The two observed point patterns to be tested should be supplied using the
 arguments \code{X} and \code{Y}. The shift vectors are generated from the
 uniform distribution on the disk with radius given by the argument \code{radius}
-and centered in the origin. The argument \code{verbose} determines if
-auxiliary information and plots should be provided.
+and centered in the origin.
+
+The test statistic is determined by the argument \code{statistic}. For "K12", the test statistic
+is functional, the stationary cross K-function. The range of arguments is from 0 to \code{rmax.K} (there
+is a sensible default). The outcome of the test is determined by the global envelope test in this case.
+Alternatively, the \code{statistic} can be set to "ED12", meaning that the test statistic is scalar,
+the expectation of the cross nearest-neighbor distance. The outcome of the test is determined by the
+classical univariate Monte Carlo test in this case.
+
+The argument \code{verbose} determines if auxiliary information and plots should be provided.
 }
 \examples{
 
 library(spatstat)
+library(GET)
 
 set.seed(123)
 
 X <- rpoispp(150)
 Y <- rpoispp(150)
 
-out <- PP.test(X=X, Y=Y, N.shifts=499, radius=0.5, correction="torus", verbose=TRUE)
-out
+# tests run with only 99 shifts to speed up the computation
+out1 <- PP.test(X=X, Y=Y, N.shifts = 99, radius=0.5, statistic="K12",
+                correction="torus", verbose=TRUE)
+out1
+plot(out1$GET.outcome)
+
+out2 <- PP.test(X=X, Y=Y, N.shifts = 99, radius=0.5, statistic="ED12",
+                correction="torus", verbose=TRUE)
+out2
 
 }
 \references{
