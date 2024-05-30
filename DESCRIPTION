@@ -10,7 +10,7 @@ Description: Nonparametric test of independence between a pair of spatial object
     Dvořák et al. (2022) <doi:10.1111/insr.12503>,
     Dvořák and Mrkvička (2022) <arxiv:2210.05424>.
 Imports: stats, graphics, spatstat, spatstat.random, spatstat.geom,
-        spatstat.model, spatstat.explore, ks, GET, geoR
+        spatstat.univar, spatstat.model, spatstat.explore, ks, GET, geoR
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.3

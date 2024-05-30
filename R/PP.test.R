@@ -25,6 +25,7 @@
 #' The argument \code{verbose} determines if auxiliary information and plots should be provided.
 #'
 #' @import spatstat
+#' @importFrom spatstat.univar stieltjes
 #' @import spatstat.explore
 #' @import stats
 #' @import GET
